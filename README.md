@@ -36,3 +36,9 @@ Relationships are enforced using foreign keys.
 sqlite3 internship_tracker.db < schema.sql
 sqlite3 internship_tracker.db < seed_data.sql
 sqlite3 internship_tracker.db
+## In sqlite run(for easier visual):
+.headers on
+.mode column
+## Then:
+SELECT * FROM applications;
+
