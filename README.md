@@ -1,44 +1,61 @@
-# Internship Application Tracker (SQL)
+# Internship Application Tracker
 
-A relational database project built with **SQLite** to track and analyze internship applications.
+A **SQLite database project** for organizing internship applications and practicing relational database design and SQL reporting.
 
-## Project Overview
-This project models real-world internship tracking using a normalized SQL schema.
-It allows users to track companies, roles, application status, deadlines, contacts,
-and communication history.
+It tracks companies, roles, applications, contacts, and follow-up interactions. The repository contains a schema, demonstration data, and reporting queries; it does not include a graphical user interface.
 
-## Database Design
-Tables include:
-- `companies` – company metadata (industry, location)
-- `roles` – internship role details
-- `applications` – application status, deadlines, source, salary
-- `contacts` – recruiters and hiring managers
-- `interactions` – interviews, emails, follow-ups
+## Database design
 
-Relationships are enforced using foreign keys.
+| Table | Purpose |
+| --- | --- |
+| `companies` | Company names, industries, and locations |
+| `roles` | Role titles, levels, and remote status |
+| `applications` | Application status, dates, source, salary, and notes |
+| `contacts` | Company contacts and contact details |
+| `interactions` | Application-related emails, interviews, next steps, and dates |
 
-## Key SQL Concepts Used
-- Table creation with primary and foreign keys
-- One-to-many relationships
-- `SELECT`, `WHERE`, `JOIN`
-- Aggregations with `GROUP BY`
-- Conditional logic using `CASE`
-- Date filtering and ordering
+The schema defines primary and foreign keys to connect these tables. **SQLite requires `PRAGMA foreign_keys = ON;` for a connection to enforce foreign-key constraints.**
 
-## Example Queries
-- View applications by status (Applied, Interviewing, Offer, Rejected)
-- Track upcoming application deadlines
-- Calculate offer rates by company
-- View full interaction timeline for an application
+## Run it locally
 
-## How to Run
+Install the [SQLite command-line tool](https://www.sqlite.org/cli.html), then run these commands from the repository folder:
+
 ```bash
 sqlite3 internship_tracker.db < schema.sql
 sqlite3 internship_tracker.db < seed_data.sql
+sqlite3 -header -column internship_tracker.db < example_queries.sql
+```
+
+The seed file contains sample records for demonstration. Note that its application deadlines are in **2025**; the dynamic "next seven days" report may return no rows when run later.
+
+To explore the data interactively:
+
+```bash
 sqlite3 internship_tracker.db
-## In sqlite run(for easier visual):
+```
+
+Inside the SQLite prompt:
+
+```sql
 .headers on
 .mode column
-## Then:
-SELECT * FROM applications;
+PRAGMA foreign_keys = ON;
+SELECT status, COUNT(*) AS applications
+FROM applications
+GROUP BY status;
+```
 
+## Example reports
+
+See [`example_queries.sql`](example_queries.sql) for SQL that:
+
+- Lists application deadlines within the next seven days
+- Groups applications by status and month
+- Calculates offer rates by company
+- Shows the interaction history for an application
+
+## What this demonstrates
+
+Normalized relational modeling; primary/foreign keys; joins; aggregation with `GROUP BY`; conditional expressions with `CASE`; and date filtering in SQLite.
+
+**Repository files:** [Schema](schema.sql) · [Sample data](seed_data.sql) · [Example queries](example_queries.sql).
